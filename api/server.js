@@ -62,6 +62,20 @@ server.delete('/api/users/:id', async (req, res) => {
     }
 })
 // [put]
-server.put('/api/users/:id')
+server.put('/api/users/:id', async (req, res) => {
+    const { id } = req.params
+    const { name, bio } = req.body
+    console.log( name, bio)
+    try {
+        const updateMember = await Member.update(id, { name, bio})
+        if (!updateMember){
+            res.status(404).json({message: `${id} invalid`})
+        } else {
+            res.json(updateMember)
+        }
+    } catch (err) {
+        res.status(500).json({message: err.message})
+    }
+})
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
