@@ -6,7 +6,7 @@ const Member = require('./users/model.js');
 const server = express();
 
 // global middleware
-server.use(express.json())
+server.use(express.json());
 
 //end points
 
@@ -30,9 +30,9 @@ server.get('/api/users', async (req, res) => {
         const friend = await Member.find()
         res.json(friend)
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({message: "The users information could not be retrieved"})
     }
-})
+});
 // [get]
 server.get('/api/users/:id', async (req, res) => {
     try {
@@ -40,28 +40,28 @@ server.get('/api/users/:id', async (req, res) => {
         console.log(id)
         const friend = await Member.findById(id)
         if (!friend){
-            res.status(404).json({ message: 'no member'})
+            res.status(404).json({ message: "The user with the specified ID does not exist"})
         } else {
             res.status(200).json(friend)
         }
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({message: "The user information could not be retrieved" })
     }
-})
+});
 
 // [delete]
 server.delete('/api/users/:id', async (req, res) => {
     try {
         const deleteMember = await Member.remove(req.params.id)
         if (!deleteMember) {
-            res.status(404).json({ message: 'No member with that ID'})
+            res.status(404).json({ message: "The user with the specified ID does not exist"})
         } else {
             res.json(deleteMember)
         }    
     } catch (err) {
-        res.status(500).json({ message: err.message})
+        res.status(500).json({ message: "The user could not be removed"})
     }
-})
+});
 // [put]
 server.put('/api/users/:id', async (req, res) => {
     const { id } = req.params
@@ -69,14 +69,16 @@ server.put('/api/users/:id', async (req, res) => {
     console.log( name, bio)
     try {
         const updateMember = await Member.update(id, { name, bio})
-        if (!updateMember){
-            res.status(404).json({message: `${id} invalid`})
+        if (!name || !bio ){
+            res.status(400).json({message: "Please provide name and bio for the user" })
+        } else if (!updateMember){
+            res.status(404).json({message: "The user with the specified ID does not exist" })
         } else {
-            res.json(updateMember)
+            res.status(200).json(updateMember)
         }
     } catch (err) {
-        res.status(500).json({message: err.message})
+        res.status(500).json({message: "The user information could not be modified" })
     }
-})
+});
 
 module.exports = server; // EXPORT YOUR SERVER instead of {}
