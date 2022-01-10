@@ -13,13 +13,14 @@ server.use(express.json())
 // [post]
 server.post('/api/users', async (req, res) => {
     try {
-        const { name, bio } = req.body
+        const { id, name, bio } = req.body
         // console.log(id, name, bio)
-        const newMember = await Member.insert({ name, bio})
-        console.log(newMember)
-        res.status(201).json(newMember)
+        const newMember = await Member.insert({ id, name, bio})
+        if (!newMember) {
+            res.status(400).json({ message: "Please provide name and bio for the user" })
+        } else {res.status(201).json(newMember)}
     } catch(err) {
-        res.status(500).json({ message: + err.message })
+        res.status(500).json({ message: "There was an error while saving the user to the database" })
     }
 });
 
