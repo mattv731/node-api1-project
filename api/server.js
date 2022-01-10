@@ -16,10 +16,8 @@ server.post('/api/users', async (req, res) => {
         const { id, name, bio } = req.body
         // console.log(id, name, bio)
         const newMember = await Member.insert({ id, name, bio})
-        if (!name || bio) {
+        if (!name) {
             res.status(400).json({ message: "Please provide name and bio for the user" })
-        } else if (!newMember) {
-            res.status(500).json({ message: "There was an error while saving the user to the database" })
         } else {res.status(201).json(newMember)}
     } catch(err) {
         res.status(500).json({ message: "There was an error while saving the user to the database" })
