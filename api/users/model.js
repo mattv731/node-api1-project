@@ -18,17 +18,23 @@ let users = initializeUsers()
 // DATABASE ACCESS FUNCTIONS
 // DATABASE ACCESS FUNCTIONS
 // DATABASE ACCESS FUNCTIONS
+
+// Done
 const find = () => {
   // SELECT * FROM users;
   return Promise.resolve(users)
 }
 
+
+// Done
 const findById = id => {
   // SELECT * FROM users WHERE id = 1;
   const user = users.find(d => d.id === id)
   return Promise.resolve(user)
 }
 
+
+// Done
 const insert = ({ name, bio }) => {
   // INSERT INTO users (name, bio) VALUES ('foo', 'bar');
   const newUser = { id: getId(), name, bio }

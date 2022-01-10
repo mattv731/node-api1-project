@@ -49,7 +49,18 @@ server.get('/api/users/:id', async (req, res) => {
 })
 
 // [delete]
-server.delete('/api/users/:id')
+server.delete('/api/users/:id', async (req, res) => {
+    try {
+        const deleteMember = await Member.remove(req.params.id)
+        if (!deleteMember) {
+            res.status(404).json({ message: 'No member with that ID'})
+        } else {
+            res.json(deleteMember)
+        }    
+    } catch (err) {
+        res.status(500).json({ message: err.message})
+    }
+})
 // [put]
 server.put('/api/users/:id')
 
